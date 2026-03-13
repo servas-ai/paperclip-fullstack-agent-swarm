@@ -161,291 +161,69 @@ Context: [was der Empfänger wissen muss]
 Documentation: [docs/lib/ Referenzen]
 ```
 
-### 5. Skill Loading & Discovery
-
-> **Jeder Agent hat Skills in seiner TOOLS.md referenziert. Hier steht, WIE man diese Skills lädt.**
-
-#### Methode 1: skills.sh CLI (empfohlen)
+### 5. Skill Loading
 
 ```bash
-# Skills suchen
-skills search "systematic-debugging"
-skills search "test-driven-development"
-skills search "react best practices"
-
-# Skill installieren (lädt SKILL.md in den Agent-Kontext)
+# Suchen + Installieren
+skills search "<thema>"
 skills install <skill-name>
 
-# Alle verfügbaren Skills listen
-skills list
+# Oder direkt von GitHub
+curl -sL https://raw.githubusercontent.com/obra/superpowers/main/skills/<name>/SKILL.md
 ```
 
-#### Methode 2: GitHub Raw Download
+### Skill-Quellen
 
-Falls `skills` CLI nicht verfügbar — direkt von GitHub laden:
+| Quelle | GitHub | Top Skills |
+|--------|--------|-----------|
+| obra/superpowers | [GitHub](https://github.com/obra/superpowers) | TDD, Debugging, Plans, Verification, Git, Subagent, Code Review |
+| Vercel Labs | [skills.sh](https://skills.sh) | React Best Practices, Design Guidelines, Browser, Next.js |
+| Anthropic | [GitHub](https://github.com/anthropics/skills) | Frontend Design, Canvas, Webapp Testing |
+| pbakaus/impeccable | [GitHub](https://github.com/pbakaus/impeccable) | OKLCH, 4pt Grid, Motion, AI Slop Test |
+| supercent-io | [GitHub](https://github.com/supercent-io/agent-skills) | Security, Code Review, Design System |
+| coreyhaines31 | [GitHub](https://github.com/coreyhaines31/marketingskills) | SEO, Content Strategy, Competitor Analysis |
+| google-labs-code | [GitHub](https://github.com/google-labs-code/stitch-skills) | React Components, Design |
+| supabase | [GitHub](https://github.com/supabase/agent-skills) | Postgres Best Practices |
+| nextlevelbuilder | [GitHub](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | UI/UX Pro Max |
+| browser-use | [GitHub](https://github.com/browser-use/browser-use) | Browser Automation |
+| better-auth | [GitHub](https://github.com/better-auth/skills) | Auth Best Practices |
+| currents-dev | [GitHub](https://github.com/currents-dev/playwright-best-practices-skill) | Playwright |
+| wshobson | [GitHub](https://github.com/wshobson/agents) | TypeScript, Tailwind |
+| sleekdotdesign | [GitHub](https://github.com/sleekdotdesign/agent-skills) | Mobile App Design |
+| am-will | [GitHub](https://github.com/am-will/codex-skills) | Context7, Find-Skills |
+| Intopia | [Website](https://intopia.digital) | Web Accessibility (WCAG) |
+| Trail of Bits | [Website](https://www.trailofbits.com) | Security Auditing |
 
-```bash
-# Superpowers Skills (obra/superpowers)
-curl -sL https://raw.githubusercontent.com/obra/superpowers/main/skills/<skill-name>/SKILL.md
+> Skills sind **inline in TOOLS.md** eingebettet. URLs dienen zum Nachlesen oder Aktualisieren.
 
-# Beispiel:
-curl -sL https://raw.githubusercontent.com/obra/superpowers/main/skills/systematic-debugging/SKILL.md
-curl -sL https://raw.githubusercontent.com/obra/superpowers/main/skills/test-driven-development/SKILL.md
-curl -sL https://raw.githubusercontent.com/obra/superpowers/main/skills/brainstorming/SKILL.md
-```
-
-#### Methode 3: MCP Server (für Tool-Integration)
-
-```json
-{
-  "context7": {
-    "command": "npx",
-    "args": ["-y", "@upstash/context7-mcp"]
-  },
-  "firecrawl": {
-    "command": "npx",
-    "args": ["-y", "firecrawl-mcp"],
-    "env": { "FIRECRAWL_API_KEY": "<key>" }
-  }
-}
-```
-
----
-
-### Skill Registry — Download URLs
-
-> Alle Skills die in Agent TOOLS.md referenziert werden, mit Download-Quelle.
-
-#### obra/superpowers (GitHub)
-
-| Skill | Download | Installs | Genutzt von |
-|-------|----------|----------|-------------|
-| `systematic-debugging` | [SKILL.md](https://github.com/obra/superpowers/tree/main/skills/systematic-debugging) | 28K | Systematic Debugger, alle Builder, alle Tester |
-| `test-driven-development` | [SKILL.md](https://github.com/obra/superpowers/tree/main/skills/test-driven-development) | 23K | Unit Test Writer, Backend Builder, Frontend Builder |
-| `brainstorming` | [SKILL.md](https://github.com/obra/superpowers/tree/main/skills/brainstorming) | 50K | Product Owner, Architecture Gatekeeper |
-| `writing-plans` | [SKILL.md](https://github.com/obra/superpowers/tree/main/skills/writing-plans) | 26K | Feature Orchestrator, QA Orchestrator |
-| `executing-plans` | [SKILL.md](https://github.com/obra/superpowers/tree/main/skills/executing-plans) | 22K | Feature Orchestrator, QA Orchestrator |
-| `subagent-driven-development` | [SKILL.md](https://github.com/obra/superpowers/tree/main/skills/subagent-driven-development) | 34K | Scrum Master, Feature Orchestrator, QA Orchestrator |
-| `verification-before-completion` | [SKILL.md](https://github.com/obra/superpowers/tree/main/skills/verification-before-completion) | 16K | ALLE Agents |
-| `requesting-code-review` | [SKILL.md](https://github.com/obra/superpowers/tree/main/skills/requesting-code-review) | 21K | Code Quality Expert, Feature Orchestrator |
-| `receiving-code-review` | [SKILL.md](https://github.com/obra/superpowers/tree/main/skills/receiving-code-review) | 17K | Code Quality Expert, alle Builder |
-| `using-git-worktrees` | [SKILL.md](https://github.com/obra/superpowers/tree/main/skills/using-git-worktrees) | 14K | Git Workflow Manager, Frontend Builder, DevOps Expert |
-| `finishing-a-development-branch` | [SKILL.md](https://github.com/obra/superpowers/tree/main/skills/finishing-a-development-branch) | 14K | Git Workflow Manager, DevOps Expert |
-| `dispatching-parallel-agents` | [SKILL.md](https://github.com/obra/superpowers/tree/main/skills/dispatching-parallel-agents) | 15K | Feature Orchestrator, QA Orchestrator |
-| `using-superpowers` | [SKILL.md](https://github.com/obra/superpowers/tree/main/skills/using-superpowers) | 20K | ALLE Agents (Meta-Framework) |
-
-#### skills.sh / Vercel Labs
-
-| Skill | Download | Installs | Genutzt von |
-|-------|----------|----------|-------------|
-| `vercel-react-best-practices` | `skills install vercel-react-best-practices` | 197K | Frontend Builder, Performance Optimizer |
-| `web-design-guidelines` | `skills install web-design-guidelines` | 155K | Design Auditor |
-| `frontend-design` | `skills install frontend-design` | 145K | Design Architect |
-| `agent-browser` | `skills install agent-browser` | 89K | E2E Tester, Browser Automation, Design Auditor |
-| `next-best-practices` | `skills install next-best-practices` | 32K | Frontend Builder |
-| `ui-ux-pro-max` | `skills install ui-ux-pro-max` | 57K | Design Architect, UX Researcher |
-| `webapp-testing` | `skills install webapp-testing` | 22K | E2E Tester, QA Orchestrator |
-| `find-skills` | `skills install find-skills` | #1 | Stack Researcher, Architecture Gatekeeper |
-| `context7` | `skills install context7` | 12K | Stack Researcher, API Schema Expert |
-| `playwright-best-practices` | `skills install playwright-best-practices` | 8K | E2E Tester |
-
-#### Anthropic (GitHub: `anthropics/skills`)
-
-| Skill | Download | Installs | Genutzt von |
-|-------|----------|----------|-------------|
-| `frontend-design` | `skills install frontend-design` / [GitHub](https://github.com/anthropics/skills) | 145K | Design Architect, Frontend Builder |
-| `canvas-design` | `skills install canvas-design` | 17K | Design Architect |
-| `brand-guidelines` | `skills install brand-guidelines` | 12K | Design Architect |
-| `webapp-testing` | `skills install webapp-testing` | 22K | E2E Tester, QA Orchestrator, Unit Test Writer |
-
-#### Supercent-io (GitHub: `supercent-io/agent-skills`)
-
-| Skill | Download | Installs | Genutzt von |
-|-------|----------|----------|-------------|
-| `security-best-practices` | `skills install security-best-practices` / [GitHub](https://github.com/supercent-io/agent-skills) | 11K | Security Auditor, Validation Expert, Stack Researcher |
-| `code-review` | `skills install code-review` | 11K | Stack Researcher, Backend Builder |
-| `frontend-design-system` | `skills install frontend-design-system` | 8K | Design Architect, Frontend Builder |
-| `ui-component-patterns` | `skills install ui-component-patterns` | 10K | Frontend Builder |
-| `state-management` | `skills install state-management` | 10K | Frontend Builder |
-| `responsive-design` | `skills install responsive-design` | 10K | Frontend Builder |
-
-#### Nextlevelbuilder (GitHub: `nextlevelbuilder/ui-ux-pro-max-skill`)
-
-| Skill | Download | Installs | Genutzt von |
-|-------|----------|----------|-------------|
-| `ui-ux-pro-max` | `skills install ui-ux-pro-max` / [GitHub](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | 57K | Design Architect, UX Researcher, Design Auditor |
-
-#### Google Labs (GitHub: `google-labs-code/stitch-skills`)
-
-| Skill | Download | Installs | Genutzt von |
-|-------|----------|----------|-------------|
-| `react:components` | `skills install react:components` / [GitHub](https://github.com/google-labs-code/stitch-skills) | 14K | Frontend Builder |
-| `design-md` | `skills install design-md` | 12K | Design Architect |
-| `stitch-loop` | `skills install stitch-loop` | 12K | Feature Orchestrator |
-
-#### Coreyhaines31 (GitHub: `coreyhaines31/marketingskills`)
-
-| Skill | Download | Installs | Genutzt von |
-|-------|----------|----------|-------------|
-| `seo-audit` | `skills install seo-audit` / [GitHub](https://github.com/coreyhaines31/marketingskills) | 39K | Design Auditor |
-| `content-strategy` | `skills install content-strategy` | 21K | Feature Orchestrator |
-| `launch-strategy` | `skills install launch-strategy` | 17K | Feature Orchestrator |
-| `competitor-alternatives` | `skills install competitor-alternatives` | 16K | Stack Researcher |
-| `copywriting` | `skills install copywriting` | 15K | Docs Manager |
-
-#### Sleekdotdesign (GitHub: `sleekdotdesign/agent-skills`)
-
-| Skill | Download | Installs | Genutzt von |
-|-------|----------|----------|-------------|
-| `sleek-design-mobile-apps` | `skills install sleek-design-mobile-apps` / [GitHub](https://github.com/sleekdotdesign/agent-skills) | 128K | Design Architect |
-
-#### Supabase (GitHub: `supabase/agent-skills`)
-
-| Skill | Download | Installs | Genutzt von |
-|-------|----------|----------|-------------|
-| `supabase-postgres-best-practices` | `skills install supabase-postgres-best-practices` / [GitHub](https://github.com/supabase/agent-skills) | 32K | Backend Builder, Event System Expert |
-
-#### Better Auth (GitHub: `better-auth/skills`)
-
-| Skill | Download | Installs | Genutzt von |
-|-------|----------|----------|-------------|
-| `better-auth-best-practices` | `skills install better-auth-best-practices` / [GitHub](https://github.com/better-auth/skills) | 21K | Backend Builder |
-
-#### Browser-Use (GitHub: `browser-use/agent-skills`)
-
-| Skill | Download | Installs | Genutzt von |
-|-------|----------|----------|-------------|
-| `browser-use` | `skills install browser-use` / [GitHub](https://github.com/browser-use/browser-use) | 48K | E2E Tester, Browser Automation |
-
-#### Wshobson (GitHub: `wshobson/agents`)
-
-| Skill | Download | Installs | Genutzt von |
-|-------|----------|----------|-------------|
-| `typescript-advanced-types` | `skills install typescript-advanced-types` / [GitHub](https://github.com/wshobson/agents) | 13K | Validation Expert, Frontend Builder |
-| `tailwind-design-system` | `skills install tailwind-design-system` | 17K | Frontend Builder |
-
-#### GitHub Awesome Copilot (GitHub: `github/awesome-copilot`)
-
-| Skill | Download | Installs | Genutzt von |
-|-------|----------|----------|-------------|
-| `git-commit` | `skills install git-commit` / [GitHub](https://github.com/awesome-copilot/awesome-copilot) | 13K | Alle Agents die committen |
-| `documentation-writer` | `skills install documentation-writer` | 8K | Docs Manager |
-| `chrome-devtools` | `skills install chrome-devtools` | 8K | E2E Tester, VM Tester |
-
-#### Currents-dev (GitHub: `currents-dev/playwright-best-practices-skill`)
-
-| Skill | Download | Installs | Genutzt von |
-|-------|----------|----------|-------------|
-| `playwright-best-practices` | `skills install playwright-best-practices` / [GitHub](https://github.com/currents-dev/playwright-best-practices-skill) | 8K | E2E Tester |
-
-#### Am-Will (GitHub: `am-will/codex-skills`)
-
-| Skill | Download | Installs | Genutzt von |
-|-------|----------|----------|-------------|
-| `context7` | `skills install context7` / [GitHub](https://github.com/am-will/codex-skills) | 12K | Stack Researcher, API Schema Expert |
-| `swarm-planner` | `skills install swarm-planner` | 12K | Architecture Gatekeeper |
-| `find-skills` | `skills install find-skills` | #1 | Stack Researcher |
-
-#### Intopia (Web Accessibility)
-
-| Skill | Download | Genutzt von |
-|-------|----------|-------------|
-| `web-accessibility` | [Intopia Digital](https://intopia.digital) — WCAG 2.1 Guidelines | Accessibility Expert, Frontend Builder, E2E Tester |
-
-#### Trail of Bits (Security)
-
-| Skill | Download | Genutzt von |
-|-------|----------|-------------|
-| `trail-of-bits-security` | `skills install trail-of-bits-security` / [Trail of Bits](https://www.trailofbits.com) | Security Auditor, Validation Expert |
-
-#### pbakaus/impeccable (GitHub)
-
-| Skill | Download | Genutzt von |
-|-------|----------|-------------|
-| Design Aesthetics (OKLCH, 4pt Grid, Motion, AI Slop Test) | [GitHub](https://github.com/pbakaus/impeccable) | Design Architect, Design Auditor, Frontend Builder, UX Researcher |
-
-> **Nutzungshinweis**: Die Kernmethodik jedes Skills ist **bereits inline** in der jeweiligen Agent-TOOLS.md eingebettet. Die Download-URLs dienen zum **vollständigen Nachlesen** der Originaldokumentation oder zum **Aktualisieren** auf neuere Versionen.
-
-### Skill Priority (obra/using-superpowers)
-1. **User Instructions** (AGENTS.md, direkte Requests) → HÖCHSTE Priorität
-2. **Skills** (skills.sh Patterns) → Override System-Defaults
-3. **System Prompt** → NIEDRIGSTE Priorität
+### Skill Priority
+1. **User Instructions** → HÖCHSTE
+2. **Skills** → Override Defaults
+3. **System Prompt** → NIEDRIGSTE
 
 ### 6. State Tracking
-- Nach JEDEM Build: `SYSTEM_STATE.md` im Projekt-Root updaten.
-- Vor JEDEM Feature: `SYSTEM_STATE.md` lesen um den aktuellen Stand zu kennen.
+- Nach JEDEM Build: `SYSTEM_STATE.md` updaten.
+- Vor JEDEM Feature: `SYSTEM_STATE.md` lesen.
 
-### 7. Advanced Reasoning Techniques (für ALLE Agents)
+### 7. Advanced Reasoning
 
-> Jeder Agent SOLL diese Techniken anwenden, wenn die Aufgabe Komplexität erfordert.
+Bei komplexen Aufgaben:
+- **Chain-of-Thought**: Denkschritte zeigen (Problem → Optionen → Entscheidung)
+- **ReAct**: Abwechselnd denken + handeln (Reason → Act → Reason → Act)
+- **Self-Refinement**: Vor Abgabe: Vollständig? Korrekt? Minimal?
 
-#### Chain-of-Thought (CoT)
-Bei komplexen Entscheidungen: **DENKSCHRITTE ZEIGEN**, nicht nur das Ergebnis.
-```
-1. Problem verstehen → Was genau soll gelöst werden?
-2. Constraints identifizieren → Was sind die Grenzen?
-3. Optionen auflisten → Welche Ansätze gibt es?
-4. Bewerten → Welche Option passt am besten? WARUM?
-5. Entscheiden → Gewählter Ansatz MIT Begründung
-```
-
-#### ReAct (Reasoning + Acting)
-Für explorative Aufgaben: **Abwechselnd DENKEN und HANDELN**.
-```
-REASON: Was muss ich herausfinden?
-ACT:    Datei lesen / Command ausführen / API aufrufen
-REASON: Was sagt das Ergebnis?
-ACT:    Nächste Aktion basierend auf dem Ergebnis
-```
-
-#### Self-Refinement Loop
-Nach JEDER Abgabe: **Eigene Arbeit kritisch prüfen**.
-```
-1. Ist mein Output vollständig? (alle ACs abgedeckt?)
-2. Ist mein Output korrekt? (keine Fehler, keine Lücken?)
-3. Ist mein Output minimal? (nichts Überflüssiges?)
-4. Würde ICH diesen Output akzeptieren, wenn ich der Empfänger wäre?
-```
-
-#### Few-Shot Examples
-Wenn möglich: **Beispiele von "Good vs Bad" zeigen**.
-```diff
-# Bad
--"Handle errors appropriately"
-
-# Good
-+"Show toast notification with error.message for 5 seconds, log full error to Sentry, 
-+ set form field border to red, display inline error text below the field"
-```
-
-### 8. Error Recovery Protocol (für ALLE Agents)
-
-> Wenn ein Agent auf einen Fehler stößt, der seine Arbeit blockiert.
+### 8. Error Recovery
 
 ```
-ERROR RECOVERY (3-Stufen-Eskalation):
-
-Stufe 1: SELBST LÖSEN (max 3 Versuche)
-  ├── Fehler analysieren (4-Phase Debugging aus Superpowers)
-  ├── Hypothese testen
-  └── Fix verifizieren
-
-Stufe 2: PEER FRAGEN (nach 3 gescheiterten Versuchen)
-  ├── Systematic Debugger einschalten
-  ├── Oder: Agent mit relevanter Expertise fragen
-  └── Kontext übergeben: Fehler, was versucht wurde, Hypothesen
-
-Stufe 3: ESKALIEREN (nach 5 Minuten ohne Fortschritt)
-  ├── Status auf BLOCKED setzen
-  ├── Blocker-Beschreibung in STATUS.md
-  └── Architecture Gatekeeper oder Orchestrator informieren
+Stufe 1: Selbst lösen (max 3 Versuche)
+Stufe 2: Systematic Debugger fragen
+Stufe 3: BLOCKED setzen → Gatekeeper
 ```
 
-### 9. Progress Reporting (REPORTING_PROTOCOL.md)
-- Jeder Agent MUSS `STATUS.md` im Feature-Ordner updaten wenn er Arbeit beginnt/beendet.
-- Orchestrator pflegt `TASK_LOG.md` im Projekt-Root.
-- Alle Feature-Deliverables (GOAL, PRD, UX_SPEC, DESIGN_SPEC, QA_REPORT) in `docs/features/<name>/`.
-- Bei Crash: Nächster Agent liest STATUS.md → setzt ab letztem ✅ fort.
+### 9. Progress Reporting
+- STATUS.md updaten bei Start/Ende von Arbeit
+- TASK_LOG.md für Feature-Übersicht
+- Bei Crash: STATUS.md lesen → ab letztem ✅ weitermachen
 
 ### 10. 🛡️ Anti-Hallucination Protocol (PFLICHT für JEDEN Agent)
 
