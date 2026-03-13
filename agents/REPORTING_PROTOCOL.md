@@ -1,5 +1,6 @@
 # REPORTING_PROTOCOL.md — Status Reporting
 
+> Letzte Aktualisierung: 2026-03-13
 > Jeder Agent updatet STATUS.md wenn er Arbeit beginnt oder beendet.
 > Bei Crash: Nächster Agent liest STATUS.md → setzt ab letztem ✅ fort.
 

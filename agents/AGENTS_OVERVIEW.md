@@ -1,5 +1,6 @@
 # AGENTS_OVERVIEW.md — Alle 30 Agents
 
+> Letzte Aktualisierung: 2026-03-13
 > 30 Agents · 17 Skill-Quellen · Methodik: [obra/superpowers](https://github.com/obra/superpowers) + [pbakaus/impeccable](https://github.com/pbakaus/impeccable)
 
 ---

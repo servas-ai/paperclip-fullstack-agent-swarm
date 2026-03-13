@@ -1,5 +1,6 @@
 # SKILLS.md — Skill Reference
 
+> Letzte Aktualisierung: 2026-03-13
 > Skill-Wissen ist **inline in jeder Agent-TOOLS.md** eingebettet.
 > Dieses File ist die Kurzreferenz für alle Skills + Download-Infos.
 > Skill-Quellen mit URLs: siehe `SHARED_CONFIG.md`
