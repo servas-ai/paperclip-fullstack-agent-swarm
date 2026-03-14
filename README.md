@@ -2,7 +2,7 @@
 
 > **30 specialized AI agents** for end-to-end software development — from idea to deploy.
 
-[![Agents](https://img.shields.io/badge/Agents-30-blue)]() [![Skills](https://img.shields.io/badge/Skills-60+-green)]() [![Skill_Sources](https://img.shields.io/badge/Skill_Sources-17_Repos-orange)]() [![Methodology](https://img.shields.io/badge/Methodology-superpowers+impeccable-blueviolet)]()
+[![Agents](https://img.shields.io/badge/Agents-30-blue)]() [![Skills](https://img.shields.io/badge/Skills-23+-green)]() [![Skill_Sources](https://img.shields.io/badge/Skill_Sources-17_Repos-orange)]() [![Methodology](https://img.shields.io/badge/Methodology-superpowers+impeccable-blueviolet)]()
 
 ---
 
@@ -23,7 +23,7 @@ User provides feature goal → 30 agents deliver production-ready software
 | 🎯 | [obra/superpowers](https://github.com/obra/superpowers) | TDD Iron Law, 4-Phase Debugging, Verification Evidence |
 | 🎨 | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) | OKLCH colors, 4pt grid, AI Slop Test (16 anti-patterns) |
 | 🛡️ | Anti-Hallucination Protocol | Every agent self-checks + peer-verifies before delivery |
-| 🔌 | [skills.sh](https://skills.sh) | 60+ skills from 17 open-source repositories |
+| 🔌 | [skills.sh](https://skills.sh) | 23+ skills from 17 open-source repositories |
 
 ---
 
@@ -31,73 +31,98 @@ User provides feature goal → 30 agents deliver production-ready software
 
 ```mermaid
 graph TD
-    CEO["👔 CEO<br/>Strategic Vision"]
-    PO["📋 Product Owner"]
-    SM["🏃 Scrum Master"]
-    AG["🏛️ Architecture Gatekeeper<br/>Quality Gate"]
+    CEO["👔 CEO"]
+
+    subgraph Leadership
+        PO["📋 Product Owner"]
+        SM["🏃 Scrum Master"]
+    end
+
+    subgraph Quality Gate
+        AG["🏛️ Architecture Gatekeeper"]
+        SPR["📋 Spec Reviewer"]
+    end
 
     CEO --> PO
     CEO --> AG
     PO --> SM
+    AG --> SPR
 
-    SR["🔬 Stack Researcher"]
-    CQ["✅ Code Quality"]
-    DM["📚 Docs Manager"]
-    DO["⚙️ DevOps Expert"]
-    K8["☸️ K8s Expert"]
-    GW["🌿 Git Workflow Mgr"]
-    SA["🔒 Security Auditor"]
-    SPR["📋 Spec Reviewer"]
-    PO2["⚡ Performance Opt."]
+    subgraph Support
+        SR["🔬 Stack Researcher"]
+        CQ["✅ Code Quality"]
+        DM["📚 Docs Manager"]
+        SD["🔍 Debugger"]
+    end
 
     AG --> SR
     AG --> CQ
     AG --> DM
+    AG --> SD
+
+    subgraph Infrastructure
+        DO["⚙️ DevOps"]
+        K8["☸️ K8s"]
+        GW["🌿 Git Workflow"]
+        BA["🌐 Browser Auto."]
+    end
+
     AG --> DO
-    AG --> SA
-    AG --> SPR
     DO --> K8
     DO --> GW
-    DO --> PO2
+    DO --> BA
 
-    FO["🎯 Feature Orchestrator<br/>Lifecycle Engine"]
+    subgraph Feature Pipeline
+        FO["🎯 Feature Orchestrator"]
+    end
+
     AG --> FO
 
-    UX["🧪 UX Researcher"]
-    DA2["🎨 Design Architect"]
-    FB["⚛️ Frontend Builder"]
-    BB["🗄️ Backend Builder"]
+    subgraph Design
+        UX["🧪 UX Researcher"]
+        DA2["🎨 Design Architect"]
+    end
 
-    FO --> UX
-    FO --> DA2
+    subgraph Build
+        FB["⚛️ Frontend Builder"]
+        BB["🗄️ Backend Builder"]
+        ES["📡 Event System"]
+        API["📐 API Schema"]
+    end
+
+    FO --> UX --> DA2
     FO --> FB
     FO --> BB
+    BB --> ES
+    BB --> API
 
-    QA["🧪 QA Orchestrator<br/>5-Layer Pipeline"]
+    subgraph Security & Performance
+        SA["🔒 Security"]
+        PO2["⚡ Performance"]
+        AE["♿ Accessibility"]
+    end
+
+    FO --> SA
+    FO --> PO2
+    FO --> AE
+
+    subgraph QA Pipeline
+        QA["🧪 QA Orchestrator"]
+        UT["Unit Tests"]
+        DAU["Design Audit"]
+        E2E["E2E Tests"]
+        VMT["VM Tests"]
+        TE["Testability"]
+        VE["Validation"]
+    end
+
     FO --> QA
-
-    UT["Unit Test"]
-    DAU["Design Audit"]
-    E2E["E2E Test"]
-    VMT["VM Test"]
-    TE["Testability"]
-    VE["Validation"]
-    AE["♿ A11y"]
-
     QA --> UT
     QA --> DAU
     QA --> E2E
     QA --> VMT
     QA --> TE
     QA --> VE
-    QA --> AE
-
-    SD["🔍 Systematic Debugger"]
-    ES["📡 Event System"]
-    API["📐 API Schema"]
-
-    AG --> ES
-    AG --> API
 
     style CEO fill:#4A90D9,color:#fff
     style AG fill:#E74C3C,color:#fff
@@ -112,26 +137,26 @@ graph TD
 
 ```mermaid
 graph LR
-    subgraph Planning
-        B["1. Backlog"] --> G["2. Goal"] --> SP["3. Spec Review 🆕"] --> PRD["4. PRD"]
+    subgraph "1 — Planning"
+        B["Backlog"] --> G["Goal"] --> SP["Spec Review"] --> PRD["PRD"]
     end
 
-    subgraph Design
-        PRD --> API["5. API Spec"] --> R["6. Research"] --> UX["7. UX Spec"] --> DS["8. Design Spec"] --> V["9. Validation"]
+    subgraph "2 — Design"
+        PRD --> API["API Spec"] --> R["Research"] --> UX["UX Spec"] --> DS["Design Spec"] --> V["Validation"]
     end
 
-    subgraph Build
-        V --> BR["10. Branch 🆕"] --> CODE["11. Code"] --> SEC["12. Security 🆕"] --> PERF["13. Performance 🆕"] --> A11Y["14. A11y 🆕"]
+    subgraph "3 — Build"
+        V --> BR["Branch"] --> CODE["Code"] --> SEC["Security"] --> PERF["Performance"] --> A11Y["A11y"]
     end
 
-    subgraph Delivery
-        A11Y --> QA["15. QA"] --> QG["16. Quality Gate"] --> DOC["17. Docs"] --> MG["18. Merge 🆕"] --> DEP["19. Deploy"] --> SC["20. Scorecard"]
+    subgraph "4 — Delivery"
+        A11Y --> QA["QA"] --> QG["Quality Gate"] --> DOC["Docs"] --> MG["Merge"] --> DEP["Deploy"] --> SC["Scorecard"]
     end
 
-    style Planning fill:#E8F4FD,stroke:#4A90D9
-    style Design fill:#FEF9E7,stroke:#F39C12
-    style Build fill:#FDEDEC,stroke:#E74C3C
-    style Delivery fill:#E8F8F5,stroke:#27AE60
+    style 1 — Planning fill:#E8F4FD,stroke:#4A90D9
+    style 2 — Design fill:#FEF9E7,stroke:#F39C12
+    style 3 — Build fill:#FDEDEC,stroke:#E74C3C
+    style 4 — Delivery fill:#E8F8F5,stroke:#27AE60
 ```
 
 ---
@@ -166,7 +191,7 @@ graph LR
 | QA Orchestrator | 5-Layer Test Pipeline, Parallel Dispatch |
 | Unit Test Writer | RED-GREEN-REFACTOR, Vitest |
 | Design Auditor | 16-Point AI Slop Audit, 3 Viewports |
-| E2E Tester | Playwright, User Journey Testing |
+| E2E Tester | Playwright, Network Tab, Console Monitoring |
 | VM Tester | Native App Testing, Desktop Automation |
 | Testability Expert | 5 Testing Anti-Patterns |
 | Validation Expert | Zod Fortress, OWASP Input Validation |
@@ -177,12 +202,12 @@ graph LR
 |-------|-----------|
 | DevOps Expert | CI/CD, Docker, GitHub Actions |
 | Kubernetes Expert | Helm, Health Probes, NetworkPolicies |
-| Browser Automation | agent-browser, Headless Chrome |
+| Browser Automation | agent-browser, Network/Console/Diff/Eval |
 | Docs Manager | Documentation-as-Code, Clear Writing |
 | Event-System Expert | Supabase Realtime, Idempotency |
 | API Schema Expert | Contract-First TDD, Zod Schemas |
 
-### 🔶 Specialists — NEW (6)
+### 🔶 Specialists (6)
 | Agent | Deliverable | Superpower |
 |-------|-------------|-----------|
 | 🔍 Systematic Debugger | `ROOT_CAUSE.md` | 4-Phase Debugging, Chain-of-Thought |
@@ -191,6 +216,61 @@ graph LR
 | 🔒 Security Auditor | `SECURITY_AUDIT.md` | OWASP Top 10, ReAct Protocol |
 | ⚡ Performance Optimizer | `PERFORMANCE_REPORT.md` | Core Web Vitals, Bundle Analysis |
 | ♿ Accessibility Expert | `A11Y_AUDIT.md` | WCAG 2.1 POUR (50+ Criteria) |
+
+---
+
+## 🔧 Embedded Skills (23)
+
+All skills are **inline in each agent's `TOOLS.md`** — no external loading required at runtime.
+
+### Core Methodology — [obra/superpowers](https://github.com/obra/superpowers)
+
+| # | Skill | What It Does | Used By |
+|---|-------|-------------|---------|
+| 1 | `systematic-debugging` | 4-Phase: Root Cause → Pattern → Hypothesis → Fix | All agents |
+| 2 | `test-driven-development` | RED → GREEN → REFACTOR. No code without failing test | Unit Test, Builders |
+| 3 | `verification-before-completion` | 5-step gate: Identify → Run → Read → Verify → Claim | All agents |
+| 4 | `writing-plans` | Zero-context bite-sized tasks, checkbox syntax | Gatekeeper, Orchestrator |
+| 5 | `executing-plans` | Load → Execute → Finish. STOP at blockers | Builders |
+| 6 | `brainstorming` | Socratic refinement: 1 question → 2-3 approaches → spec | Gatekeeper, UX |
+| 7 | `subagent-driven-development` | Fresh subagent per task: Implement → Spec Review → Quality Review | Orchestrator |
+| 8 | `dispatching-parallel-agents` | Identify independent tasks → dispatch parallel → integrate | Orchestrator, QA |
+| 9 | `finishing-a-development-branch` | Verify → Merge → Cleanup worktree | Builders |
+| 10 | `requesting-code-review` | After each task: SHAs → dispatch reviewer → fix critical | Builders, QA |
+| 11 | `receiving-code-review` | READ → UNDERSTAND → VERIFY → EVALUATE → IMPLEMENT | Builders |
+| 12 | `using-git-worktrees` | `git worktree add` for feature isolation | Git Workflow, Builders |
+| 13 | `using-superpowers` | Priority: User > Skills > System Prompt | All agents |
+
+### Frontend & Design — [vercel-labs](https://skills.sh) + [anthropics](https://github.com/anthropics/skills) + [pbakaus](https://github.com/pbakaus/impeccable)
+
+| # | Skill | What It Does | Used By |
+|---|-------|-------------|---------|
+| 14 | `vercel-react-best-practices` | `Promise.all()`, no barrel files, Server Components default | Frontend Builder |
+| 15 | `web-design-guidelines` | Vercel design rules, fetch + validate against guidelines | Design Auditor |
+| 16 | `frontend-design` | Typography (no system fonts), color (dominant + accents), motion | Design Architect |
+| 17 | `agent-browser` | Network tab, console errors, diff, eval, semantic locators | E2E, Browser, Auditor |
+| 18 | `next-best-practices` | App Router, `loading.tsx` + `error.tsx`, Metadata API | Frontend Builder |
+| 19 | `ui-ux-pro-max` | Contrast ≥4.5:1, touch ≥44px, focus rings, `prefers-reduced-motion` | UX, Design Architect |
+| 20 | `webapp-testing` | Server tests → `curl`, visual tests → `agent-browser` | E2E, QA |
+| 21 | `impeccable` | OKLCH, 4pt grid, exponential easing, AI Slop Test | Design Architect, Auditor, Frontend |
+
+### Specialized
+
+| # | Skill | What It Does | Used By |
+|---|-------|-------------|---------|
+| 22 | `supabase-postgres` | RLS, indexes on FKs, enums, prepared statements | Backend Builder |
+| 23 | `context7` | Fetch latest version-specific docs for any library | Stack Researcher |
+
+### Skill Workflow (Superpowers → Agent Pipeline)
+
+```
+brainstorming → writing-plans → subagent-driven-dev → test-driven-dev → requesting-review → finishing-branch
+    ↓               ↓                 ↓                     ↓                  ↓                  ↓
+Gatekeeper    Orchestrator        Orchestrator          Unit Test           QA Orch            Builders
+  + UX           + Gate           → Builder + QA         + Builders         → Reviewer        → Gatekeeper
+```
+
+Always active: `systematic-debugging` (on bugs) · `verification-before-completion` (before delivery)
 
 ---
 
@@ -223,22 +303,28 @@ graph LR
 
 ---
 
-## 🔧 Skill Sources
+## 🔧 Skill Sources (17 Repositories)
 
 ```bash
-# Install skills via CLI
 skills search "systematic-debugging"
 skills install systematic-debugging
 ```
 
 | Repository | Key Skills | Installs |
 |-----------|-----------|----------|
-| [obra/superpowers](https://github.com/obra/superpowers) | TDD, Debugging, Plans, Verification, Code Review | 14K–50K |
-| [vercel-labs](https://skills.sh) | React Best Practices, Design Guidelines, Browser | 32K–199K |
+| [obra/superpowers](https://github.com/obra/superpowers) | TDD, Debugging, Plans, Verification, Code Review, Git | 14K–50K |
+| [vercel-labs](https://skills.sh) | React, Design Guidelines, Browser, Next.js | 32K–199K |
 | [anthropics/skills](https://github.com/anthropics/skills) | Frontend Design, Canvas, Webapp Testing | 17K–145K |
 | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) | OKLCH, Grid, Motion, AI Slop Test | — |
 | [supabase/agent-skills](https://github.com/supabase/agent-skills) | Postgres Best Practices, RLS | 32K |
-| + 12 more repos | 30+ additional skills | 8K–128K |
+| [am-will/codex-skills](https://github.com/am-will/codex-skills) | Context7 (latest docs fetcher) | 12K |
+| [currents-dev](https://skills.sh) | Playwright Best Practices | 8K |
+| [coreyhaines31](https://skills.sh) | Competitor/Alternatives Analysis | 16K |
+| [supercent-io](https://github.com/supercent-io/agent-skills) | Security, Code Review, Design System | 11K |
+| [browser-use](https://skills.sh) | Advanced Browser Automation | 48K |
+| [nextlevelbuilder](https://skills.sh) | UI/UX Pro Max | 56K |
+| [squirrelscan](https://skills.sh) | Audit Website | 34K |
+| + 5 more repos | Additional skills | 8K–128K |
 
 > Full registry with URLs: [`agents/SHARED_CONFIG.md`](agents/SHARED_CONFIG.md)
 
@@ -300,7 +386,7 @@ agents/
 | Agent Folders | 30 |
 | Config Files | 124 |
 | Skill Sources | 17 Repositories |
-| Embedded Skills | 60+ |
+| Embedded Skills | 23 |
 
 ---
 
