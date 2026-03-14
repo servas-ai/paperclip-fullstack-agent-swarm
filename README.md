@@ -27,7 +27,25 @@ User provides feature goal → 30 agents deliver production-ready software
 
 ---
 
-## 🏗️ Architecture
+## 🚀 Quickstart
+
+```bash
+# 1. Clone
+git clone https://github.com/servas-ai/paperclip-fullstack-agent-swarm.git
+cd paperclip-fullstack-agent-swarm
+
+# 2. Copy agents/ into your Paperclip workspace
+cp -r agents/ /path/to/your/paperclip/workspace/agents/
+
+# 3. Each agent reads its 4 config files automatically:
+#    SOUL.md → Persona    AGENTS.md → Role
+#    TOOLS.md → Skills    HEARTBEAT.md → Checklist
+```
+
+> **Prerequisites**: [Paperclip](https://paperclip.co) workspace with [OpenCode](https://opencode.ai) runtime.
+> Agents auto-discover each other via the Paperclip API.
+
+---
 
 > **Note:** Paperclip handles task dispatch, issue assignment, and status tracking natively via its API.
 > The hierarchy below shows **expertise flow** — who informs whom, not who "commands" whom.
