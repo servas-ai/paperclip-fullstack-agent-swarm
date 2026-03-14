@@ -29,134 +29,127 @@ User provides feature goal → 30 agents deliver production-ready software
 
 ## 🏗️ Architecture
 
+> **Note:** Paperclip handles task dispatch, issue assignment, and status tracking natively via its API.
+> The hierarchy below shows **expertise flow** — who informs whom, not who "commands" whom.
+
 ```mermaid
 graph TD
-    CEO["👔 CEO"]
+    CEO["👔 CEO<br/>Strategic Vision"]
 
-    subgraph Leadership
-        PO["📋 Product Owner"]
-        SM["🏃 Scrum Master"]
-    end
-
-    subgraph Quality Gate
-        AG["🏛️ Architecture Gatekeeper"]
-        SPR["📋 Spec Reviewer"]
-    end
+    PO["📋 Product Owner<br/>Backlog + Priorities"]
+    SM["🏃 Scrum Master<br/>Sprint Cadence"]
+    AG["🏛️ Gatekeeper<br/>HARD-GATE"]
 
     CEO --> PO
     CEO --> AG
-    PO --> SM
-    AG --> SPR
+    PO <--> SM
 
-    subgraph Support
-        SR["🔬 Stack Researcher"]
-        CQ["✅ Code Quality"]
-        DM["📚 Docs Manager"]
-        SD["🔍 Debugger"]
-    end
-
-    AG --> SR
-    AG --> CQ
-    AG --> DM
-    AG --> SD
-
-    subgraph Infrastructure
-        DO["⚙️ DevOps"]
-        K8["☸️ K8s"]
-        GW["🌿 Git Workflow"]
-        BA["🌐 Browser Auto."]
-    end
-
-    AG --> DO
-    DO --> K8
-    DO --> GW
-    DO --> BA
-
-    subgraph Feature Pipeline
-        FO["🎯 Feature Orchestrator"]
-    end
-
+    %% Gatekeeper approves, then Orchestrator runs the pipeline
+    FO["🎯 Feature Orchestrator<br/>21-Step Pipeline"]
     AG --> FO
 
-    subgraph Design
-        UX["🧪 UX Researcher"]
-        DA2["🎨 Design Architect"]
-    end
+    %% Pre-Build: Research & Spec
+    SPR["📋 Spec Reviewer"]
+    SR["🔬 Stack Researcher"]
+    AG --> SPR
+    AG --> SR
 
-    subgraph Build
-        FB["⚛️ Frontend Builder"]
-        BB["🗄️ Backend Builder"]
-        ES["📡 Event System"]
-        API["📐 API Schema"]
-    end
+    %% Design Phase
+    UX["🧪 UX Researcher"]
+    DA["🎨 Design Architect"]
+    FO --> UX --> DA
 
-    FO --> UX --> DA2
+    %% Build Phase
+    FB["⚛️ Frontend Builder"]
+    BB["🗄️ Backend Builder"]
     FO --> FB
     FO --> BB
-    BB --> ES
-    BB --> API
 
-    subgraph Security & Performance
-        SA["🔒 Security"]
-        PO2["⚡ Performance"]
-        AE["♿ Accessibility"]
-    end
+    %% Backend sub-specialists
+    ES["📡 Event System"]
+    API["📐 API Schema"]
+    BB --- ES
+    BB --- API
 
+    %% Quality Gates (after Build)
+    SA["🔒 Security Auditor"]
+    PF["⚡ Performance Opt."]
+    AE["♿ Accessibility"]
     FO --> SA
-    FO --> PO2
+    FO --> PF
     FO --> AE
 
-    subgraph QA Pipeline
-        QA["🧪 QA Orchestrator"]
-        UT["Unit Tests"]
-        DAU["Design Audit"]
-        E2E["E2E Tests"]
-        VMT["VM Tests"]
-        TE["Testability"]
-        VE["Validation"]
-    end
-
+    %% QA Pipeline
+    QA["🧪 QA Orchestrator<br/>5-Layer Pipeline"]
     FO --> QA
+    UT["Unit Tests"]
+    DAU["Design Audit"]
+    E2E["E2E + Browser"]
+    VE["Validation"]
     QA --> UT
     QA --> DAU
     QA --> E2E
-    QA --> VMT
-    QA --> TE
     QA --> VE
 
+    %% Cross-cutting (available to all)
+    SD["🔍 Debugger"]
+    CQ["✅ Code Quality"]
+    GW["🌿 Git Workflow"]
+    DO["⚙️ DevOps + K8s"]
+    DM["📚 Docs Manager"]
+
+    AG --> SD
+    AG --> CQ
+    AG --> DO
+    AG --> GW
+    AG --> DM
+
+    %% Styling
     style CEO fill:#4A90D9,color:#fff
     style AG fill:#E74C3C,color:#fff
     style FO fill:#F39C12,color:#fff
     style QA fill:#27AE60,color:#fff
     style SA fill:#8E44AD,color:#fff
+    style PO fill:#4A90D9,color:#fff
 ```
+
+**What Paperclip handles natively** (no custom Markdown files needed):
+- ✅ Task assignment → `PATCH /api/issues/{id}` (status: todo → in_progress → done)
+- ✅ Agent-to-agent handoff → Issue reassignment
+- ✅ Status tracking → Issue status field
+- ✅ Crash recovery → Paperclip knows which issues are `in_progress`
+
+**What agents add on top** (design artifacts, not status):
+- `GOAL.md`, `PRD.md`, `UX_SPEC.md`, `DESIGN_SPEC.md` → Design documents
+- `TEST_REPORT.md`, `SECURITY_AUDIT.md`, `A11Y_AUDIT.md` → Quality reports
+- `SYSTEM_STATE.md`, `MEMORY.md` → Persistent knowledge
 
 ---
 
-## 🔄 Feature Lifecycle
+## 🔄 Feature Lifecycle (20 Steps)
 
 ```mermaid
 graph LR
-    subgraph "1 — Planning"
-        B["Backlog"] --> G["Goal"] --> SP["Spec Review"] --> PRD["PRD"]
+    subgraph Planning
+        B["1. Backlog"] --> G["2. Goal"] --> SP["3. Spec Review"] --> PRD["4. PRD"]
     end
 
-    subgraph "2 — Design"
-        PRD --> API["API Spec"] --> R["Research"] --> UX["UX Spec"] --> DS["Design Spec"] --> V["Validation"]
+    subgraph Design
+        PRD --> API["5. API Spec"] --> R["6. Research"] --> UX["7. UX Spec"] --> DS["8. Design Spec"] --> V["9. Validation"]
     end
 
-    subgraph "3 — Build"
-        V --> BR["Branch"] --> CODE["Code"] --> SEC["Security"] --> PERF["Performance"] --> A11Y["A11y"]
+    subgraph Build
+        V --> BR["10. Branch"] --> CODE["11. Code"] --> SEC["12. Security"] --> PERF["13. Perf."] --> A11Y["14. A11y"]
     end
 
-    subgraph "4 — Delivery"
-        A11Y --> QA["QA"] --> QG["Quality Gate"] --> DOC["Docs"] --> MG["Merge"] --> DEP["Deploy"] --> SC["Scorecard"]
+    subgraph Delivery
+        A11Y --> QA["15. QA"] --> QG["16. Quality"] --> DOC["17. Docs"] --> MG["18. Merge"] --> DEP["19. Deploy"] --> SC["20. Done"]
     end
 
-    style 1 — Planning fill:#E8F4FD,stroke:#4A90D9
-    style 2 — Design fill:#FEF9E7,stroke:#F39C12
-    style 3 — Build fill:#FDEDEC,stroke:#E74C3C
-    style 4 — Delivery fill:#E8F8F5,stroke:#27AE60
+    style Planning fill:#E8F4FD,stroke:#4A90D9
+    style Design fill:#FEF9E7,stroke:#F39C12
+    style Build fill:#FDEDEC,stroke:#E74C3C
+    style Delivery fill:#E8F8F5,stroke:#27AE60
 ```
 
 ---
