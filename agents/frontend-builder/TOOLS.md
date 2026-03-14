@@ -35,11 +35,49 @@ npx shadcn@latest docs <component>        # Usage examples
 
 **MEDIUM**: Derive state during render (not effects) · `useRef` for transient values · `startTransition` for non-urgent
 
-### 2. Design — Impeccable (pbakaus) + frontend-design (Anthropic)
-- **OKLCH** colors, tinted neutrals, 60-30-10 rule · No pure black/white
-- **Fluid type** via `clamp()` · Distinctive fonts (no Inter/Roboto/Arial)
-- **4pt grid** · Motion: 100/300/500ms, exponential easing, `prefers-reduced-motion`
-- **AI Slop Test**: no card-in-card, no glassmorphism-everywhere, no cyan-on-dark
+### 2. Impeccable Design — [pbakaus/impeccable](https://github.com/pbakaus/impeccable)
+
+**Color — OKLCH (mandatory, not HSL)**
+```css
+--primary: oklch(60% 0.15 250);       /* Perceptually uniform */
+--neutral-100: oklch(95% 0.01 60);    /* Tinted neutrals, NEVER pure gray */
+/* 60-30-10: 60% neutral, 30% secondary, 10% accent */
+```
+- ❌ No `#000`/`#fff` · No gray on colored bg · No cyan-on-dark · No gradient text
+
+**Typography — Fluid, Distinctive**
+```css
+--fs-sm: clamp(0.8rem, 0.17vw + 0.76rem, 0.89rem);
+--fs-base: clamp(1rem, 0.34vw + 0.91rem, 1.19rem);
+--fs-lg: clamp(1.25rem, 0.61vw + 1.1rem, 1.58rem);
+```
+- ✅ Distinctive fonts: Instrument Sans, Plus Jakarta, Outfit, Geist, Satoshi
+- ❌ No Inter/Roboto/Arial/Open Sans · No monospace for "tech vibes"
+
+**Layout — 4pt Grid**
+- Scale: 4/8/12/16/24/32/48/64/96px · `gap` not margins · Container queries for components
+- ❌ No card-in-card · No identical card grids · No center-everything · No hero-metric template
+
+**Motion — 100/300/500ms**
+```css
+--ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);   /* Buttons: 100-150ms */
+--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);     /* Menus: 200-300ms */
+/* Modals: 300-500ms, exit = 75% of enter */
+/* Height: grid-template-rows, NEVER animate height directly */
+```
+- ✅ Only `transform` + `opacity` · `prefers-reduced-motion` = mandatory
+- ❌ No bounce/elastic · No generic `ease`
+
+**Interaction**
+- ✅ Optimistic UI — update immediately, sync later
+- ✅ Progressive disclosure — basic first, advanced behind expandable
+- ✅ Empty states that teach, not just "nothing here"
+- ❌ No modals unless truly no alternative · Not every button primary — hierarchy matters
+
+**AI Slop Check** (before every PR):
+- [ ] Fonts ≠ Inter/Roboto · Colors = OKLCH · No `#000`/`#fff`
+- [ ] No card-in-card · No glassmorphism · No bounce easing
+- [ ] No cyan-on-dark · No gradient text · `prefers-reduced-motion` supported
 
 ### 3. Accessibility — ui-ux-pro-max (56K)
 - Contrast ≥4.5:1 · Touch ≥44px · Focus rings · Heading hierarchy · `prefers-reduced-motion`
