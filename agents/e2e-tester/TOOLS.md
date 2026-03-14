@@ -12,69 +12,135 @@
 
 ## Primary: agent-browser (vercel-labs, 89K)
 
-You use agent-browser to test live builds by simulating real user interactions.
-
 ### Core E2E Workflow
 ```bash
-# 1. Open page and wait for load
+# 1. Open + wait
 agent-browser open <build-url>
 agent-browser wait --load networkidle
 
-# 2. Interact like a user
-agent-browser click @login-button
-agent-browser type @email-input "test@example.com"
-agent-browser type @password-input "password123"
-agent-browser click @submit-button
+# 2. Snapshot interactive elements → use refs
+agent-browser snapshot -i              # List all interactive elements
+agent-browser click @e1                # Click by ref
+agent-browser fill @e2 "test@example.com"  # Clear + type
+agent-browser type @e3 "password123"
+agent-browser click @e4
 agent-browser wait --text "Dashboard"
 agent-browser screenshot login-success.png
 
-# 3. Test responsive functionality
-agent-browser set viewport 375 812   # Mobile
+# 3. Network + Console Monitoring (MANDATORY per test)
+agent-browser network log start        # Start capturing requests
+# ... test actions ...
+agent-browser network log stop         # Stop + show all HTTP requests
+agent-browser console errors           # Check for JS errors → MUST be 0
+agent-browser console warnings         # Check warnings
+
+# 4. Visual Regression (diff)
+agent-browser screenshot baseline.png
+# ... make changes ...
+agent-browser diff screenshot --baseline baseline.png  # Pixel diff, red highlights
+agent-browser diff snapshot            # Compare DOM against last snapshot
+
+# 5. State Inspection (eval)
+agent-browser eval 'document.querySelectorAll("[aria-invalid]").length'  # Check form errors
+agent-browser eval 'localStorage.getItem("auth-token")'                 # Check state
+agent-browser eval 'performance.getEntriesByType("navigation")[0].domContentLoadedEventEnd'  # Load timing
+
+# 6. Responsive Testing
+agent-browser set device "iPhone 14"   # Device emulation (viewport + UA)
 agent-browser screenshot test-mobile.png
-agent-browser set viewport 768 1024  # Tablet
+agent-browser set viewport 768 1024    # Tablet
 agent-browser screenshot test-tablet.png
-agent-browser set viewport 1440 900  # Desktop
+agent-browser set viewport 1440 900    # Desktop
 agent-browser screenshot test-desktop.png
 
-# 4. Test dark mode functionality
+# 7. Dark Mode
 agent-browser --color-scheme dark open <url>
 agent-browser screenshot test-dark.png
 
-# 5. Test error scenarios
-agent-browser type @email-input "invalid-email"
-agent-browser click @submit-button
-agent-browser screenshot error-state.png
-
-# 6. Performance snapshot
-agent-browser profiler start
-# ... user actions ...
-agent-browser profiler stop
-
-# 7. Cleanup
+# 8. Cleanup
 agent-browser close
 ```
 
-### Interaction Commands
+### Network Tab — CRITICAL for API Testing
 ```bash
-agent-browser click @element-id           # Click element
-agent-browser type @input-id "text"       # Type into input
-agent-browser select @select-id "option"  # Select dropdown option
-agent-browser scroll down 500             # Scroll page
-agent-browser wait --text "Expected"      # Wait for text
-agent-browser wait --load networkidle     # Wait for network
-agent-browser get text @element-id        # Read element text
-agent-browser get value @input-id         # Read input value
-agent-browser snapshot -i                 # List interactive elements
-agent-browser highlight @element-id       # Highlight element
+agent-browser network log start        # Start monitoring ALL HTTP requests
+
+# ... perform user actions (login, form submit, etc.) ...
+
+agent-browser network log stop         # Stop + show:
+                                       # - URLs, methods, status codes
+                                       # - Response times
+                                       # - Failed requests (4xx, 5xx)
+                                       # - Payload sizes
+
+# CHECK for:
+# ❌ 4xx/5xx status codes → API or auth errors
+# ❌ Slow requests (>1s) → performance issues
+# ❌ Duplicate requests → waterfall problems
+# ❌ Missing CORS headers → cross-origin issues
 ```
 
-### Viewport Presets
+### Console Monitoring — MANDATORY
 ```bash
-agent-browser set viewport 375 812    # iPhone SE
-agent-browser set viewport 390 844    # iPhone 14
-agent-browser set viewport 768 1024   # iPad
-agent-browser set viewport 1440 900   # Desktop
-agent-browser set viewport 1920 1080  # Full HD
+agent-browser console errors           # JS errors → MUST be ZERO
+agent-browser console warnings         # Deprecation/perf warnings
+agent-browser console log              # All console output
+
+# IRON LAW: No E2E test passes with JS errors in console.
+# If console errors exist → test FAILS regardless of visual appearance.
+```
+
+### Diff Commands — Visual Regression
+```bash
+# DOM diff (accessibility tree)
+agent-browser snapshot -i              # Baseline
+agent-browser click @e1                # Action
+agent-browser diff snapshot            # What changed? (+/- like git diff)
+
+# Screenshot diff
+agent-browser diff screenshot --baseline before.png  # Pixel diff → red highlights
+
+# Compare staging vs production
+agent-browser diff url https://staging.example.com https://prod.example.com --screenshot
+
+# Scoped diff (specific component)
+agent-browser diff url <url1> <url2> --selector "#main-content"
+```
+
+### JavaScript Evaluation (eval)
+```bash
+# Simple checks
+agent-browser eval 'document.title'
+agent-browser eval 'document.querySelectorAll("img").length'
+
+# State inspection
+agent-browser eval 'JSON.stringify(Object.keys(localStorage))'
+agent-browser eval 'document.cookie'
+
+# Complex checks (use --stdin for multi-line/nested quotes)
+agent-browser eval --stdin <<'EVALEOF'
+JSON.stringify(
+  Array.from(document.querySelectorAll("img"))
+    .filter(i => !i.alt)
+    .map(i => ({ src: i.src.split("/").pop(), width: i.width }))
+)
+EVALEOF
+```
+
+### Semantic Locators (when refs unavailable)
+```bash
+agent-browser find text "Sign In" click
+agent-browser find label "Email" fill "user@test.com"
+agent-browser find role button click --name "Submit"
+agent-browser find placeholder "Search" type "query"
+agent-browser find testid "submit-btn" click
+```
+
+### Annotated Screenshots (Vision Mode)
+```bash
+agent-browser screenshot --annotate    # Numbers on every interactive element
+# Output: [1] @e1 button "Submit", [2] @e2 link "Home", [3] @e3 textbox "Email"
+# Use for: unlabeled icon buttons, canvas elements, spatial layout verification
 ```
 
 ---
@@ -83,65 +149,55 @@ agent-browser set viewport 1920 1080  # Full HD
 
 ### Testing Methodology
 
-> Source: [obra/superpowers](https://github.com/obra/superpowers)
+| Skill | Source | Use |
+|-------|--------|-----|
+| `webapp-testing` | anthropics | Web app test patterns |
+| `playwright-best-practices` | currents-dev | E2E best practices |
+| `systematic-debugging` | obra/superpowers | 4-phase root cause analysis |
+| `verification-before-completion` | obra/superpowers | Evidence before claims |
+| `browser-use` | browser-use (48K) | Advanced browser automation |
 
-| Skill | Source | Installs | Use |
-|-------|--------|----------|-----|
-| `webapp-testing` | anthropics | 22K | Web app test patterns and strategies |
-| `playwright-best-practices` | currents-dev | 8K | E2E test best practices |
-| `systematic-debugging` | obra/superpowers | 28K | **4-phase root cause analysis** (see below) |
-| `verification-before-completion` | obra/superpowers | 16K | Evidence before claims |
-| `chrome-devtools` | github/awesome-copilot | 8K | Browser DevTools for performance + debugging |
-| `dogfood` | vercel-labs | 8K | Self-testing and dogfooding patterns |
-| `browser-use` | browser-use | 48K | Advanced browser automation |
-| `web-accessibility` | intopia | — | WCAG compliance, focus management |
+**Systematic Debugging for E2E (4-Phase):**
+1. **Root Cause** — Screenshot + `console errors` + `network log`. Timing? DOM? Selector? Auth?
+2. **Pattern Analysis** — Compare working vs failing. Check selectors, waits, viewport
+3. **Hypothesis Testing** — SINGLE change. Verify BEFORE stacking fixes
+4. **Implementation** — Fix at root cause. NEVER use `sleep()` — use condition-based waiting
 
-**Systematic Debugging for E2E (Superpowers 4-Phase):**
-
-When E2E tests fail or are flaky:
-1. **Root Cause Investigation** — Read error screenshot + logs. Is it timing? DOM not ready? Wrong selector? Element obscured? Check if it reproduces consistently.
-2. **Pattern Analysis** — Find working E2E tests. What's different? Check selectors, wait conditions, viewport.
-3. **Hypothesis Testing** — SINGLE change. Add a `waitFor`? Fix selector? Increase timeout? Verify BEFORE stacking fixes.
-4. **Implementation** — Fix at root cause. DON'T just add `sleep(5000)`. Use proper wait conditions.
-
-**Verification Gate (Superpowers):**
-- Before reporting "ALL PASS": run the FULL test suite, not just one scenario
-- Read the FULL output: total, passed, failed, skipped
-- Screenshots for every scenario (pass AND fail)
-- Only report PASS if ALL assertions pass with evidence
+**Verification Gate:**
+- Run FULL test suite, not just one scenario
+- `console errors` MUST be 0
+- `network log` — no 4xx/5xx
+- Screenshots for EVERY scenario
+- Only report PASS with evidence
 
 ---
 
 ## E2E Test Scenarios (Standard)
 
-For every feature, test these scenarios:
-
 ### Happy Path
-1. User can complete the intended journey start-to-finish.
-2. All form submissions work with valid data.
-3. Navigation flows correctly between pages.
-4. Data persists after page refresh (if expected).
+1. User completes intended journey start-to-finish
+2. All form submissions work · Navigation flows correctly
+3. Data persists after refresh (if expected)
 
 ### Error Path
-1. Invalid form inputs show proper error messages.
-2. Empty required fields prevent submission.
-3. API errors show user-friendly messages.
-4. Network timeout shows appropriate feedback.
+1. Invalid inputs show proper error messages
+2. Empty required fields prevent submission
+3. API errors show user-friendly messages (check `network log` for 4xx/5xx)
 
 ### Edge Cases
-1. Empty states display helpfully.
-2. Very long text doesn't break layouts.
-3. Rapid clicking doesn't break functionality.
-4. Back button works correctly.
-5. Refresh doesn't lose user state (where expected).
+1. Empty states · Very long text · Rapid clicking · Back button · Refresh
 
-### Responsive
-1. All functionality works on Mobile (375px).
-2. All functionality works on Tablet (768px).
-3. All functionality works on Desktop (1440px).
+### Responsive (3 viewports)
+```bash
+agent-browser set device "iPhone 14"   # 390x844
+agent-browser set viewport 768 1024    # Tablet
+agent-browser set viewport 1440 900    # Desktop
+```
 
-### Dark Mode
-1. All functionality works in dark mode (not just visual — functional).
+### Dark Mode + Console + Network
+1. Functional test in dark mode (not just visual)
+2. `console errors` → ZERO in both themes
+3. `network log` → no failed requests
 
 ---
 
@@ -149,45 +205,29 @@ For every feature, test these scenarios:
 
 ```markdown
 # TEST_REPORT: [Feature Name]
-> Tested: [date] | Tester: End-to-End Test Automation Agent
-> Build URL: [url]
-> Based on: PRD Acceptance Criteria
+> Tested: [date] | Build URL: [url]
 
 ## Summary
-[X] test scenarios: [N] ✅ PASS, [N] ❌ FAIL
+[X] scenarios: [N] ✅ PASS, [N] ❌ FAIL
+
+## Network & Console Health
+- JS Console Errors: [0 / N errors]
+- Failed HTTP Requests: [0 / N failed]
+- Slowest Request: [url] ([Xms])
 
 ## ✅ PASS Scenarios
-
-### 1. [Scenario Name]
-- **Steps**: [step-by-step what was done]
-- **Expected**: [what should happen]
-- **Actual**: [what happened]
-- **Evidence**: ![screenshot](path/to/screenshot.png)
+### 1. [Scenario]
+- Steps → Expected → Actual → Evidence: ![screenshot](path)
 
 ## ❌ FAIL Scenarios
+### 1. [Scenario]
+- Steps → Expected → Actual → Error → Console Output → Network Log
+- Severity: Critical / Major / Minor
 
-### 1. [Scenario Name]
-- **Steps**: [step-by-step reproduction]
-- **Expected**: [what should happen]
-- **Actual**: [what went wrong]
-- **Error**: [error message/log if any]
-- **Evidence**: ![screenshot](path/to/failure.png)
-- **Severity**: Critical / Major / Minor
-
-## Responsive Results
-| Viewport | Status | Notes |
-|----------|--------|-------|
-| Mobile (375px) | ✅/❌ | [notes] |
-| Tablet (768px) | ✅/❌ | [notes] |
-| Desktop (1440px) | ✅/❌ | [notes] |
-
-## Dark Mode Results
-| Theme | Status | Notes |
-|-------|--------|-------|
-| Light | ✅/❌ | [notes] |
-| Dark | ✅/❌ | [notes] |
+## Responsive | Viewport | Status |
+## Dark Mode  | Theme    | Status |
 
 ## Verdict
-- [ ] ✅ ALL PASS — ready for shipping
-- [ ] ❌ HAS FAILURES — [N] scenarios need fixing
+- [ ] ✅ ALL PASS + 0 console errors + 0 network errors → ready
+- [ ] ❌ HAS FAILURES → [N] scenarios need fixing
 ```
