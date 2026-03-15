@@ -231,3 +231,19 @@ agent-browser set viewport 1440 900    # Desktop
 - [ ] ✅ ALL PASS + 0 console errors + 0 network errors → ready
 - [ ] ❌ HAS FAILURES → [N] scenarios need fixing
 ```
+
+---
+
+## VM/Desktop Testing (merged from VM Tester — optional)
+
+> Only when native/desktop app testing is required. Skip for web-only.
+
+```bash
+vm-desktop connect <vm-id>
+vm-desktop screenshot desktop-test.png
+vm-desktop click <x> <y>
+vm-desktop type "input text"
+vm-desktop close
+```
+
+Use same test structure: happy path → error paths → screenshot evidence → TEST_REPORT.md

@@ -117,3 +117,24 @@ stores/featureStore.ts        → featureStore.test.ts
 - MSW for API mocking, never mock `fetch`
 - One test file per source file
 - Run ALL tests before reporting
+
+---
+
+## Testability Analysis (merged from Testability Expert)
+
+### Test Pyramid
+```
+     E2E (10%) — Critical user journeys
+   Integration (20%) — API, DB, auth flows
+  Unit Tests (70%) — Logic, validation, hooks, components
+```
+
+### Mock Strategy
+- External API → YES (MSW) · Business logic → NO · Zod → NO
+- Database: Unit → mock · Integration → test DB
+- Time → `vi.useFakeTimers()` · Random → seed RNG
+
+### Edge Case Checklist
+- [ ] Empty (null, undefined, "", [], {}) · Boundary (0, MAX)
+- [ ] Invalid types · Unicode · Concurrent access · Network failure
+- [ ] Auth edge cases (expired, wrong role) · Pagination limits

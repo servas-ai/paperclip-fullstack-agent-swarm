@@ -1,19 +1,19 @@
 # 🤖 Paperclip Fullstack Agent Swarm
 
-> **30 specialized AI agents** for end-to-end software development — from idea to deploy.
+> **23 specialized AI agents** for end-to-end software development — from idea to deploy.
 
-[![Agents](https://img.shields.io/badge/Agents-30-blue)]() [![Skills](https://img.shields.io/badge/Skills-23+-green)]() [![Skill_Sources](https://img.shields.io/badge/Skill_Sources-17_Repos-orange)]() [![Methodology](https://img.shields.io/badge/Methodology-superpowers+impeccable-blueviolet)]()
+[![Agents](https://img.shields.io/badge/Agents-23-blue)]() [![Skills](https://img.shields.io/badge/Skills-23+-green)]() [![Skill_Sources](https://img.shields.io/badge/Skill_Sources-17_Repos-orange)]() [![Methodology](https://img.shields.io/badge/Methodology-superpowers+impeccable-blueviolet)]()
 
 ---
 
 ## ⚡ What Is This?
 
-A multi-agent system where **30 AI agents** collaborate to plan, design, build, test, secure, and deploy software. Each agent has its own persona, expertise, and workflow — defined by 4 configuration files.
+A multi-agent system where **23 AI agents** collaborate to plan, design, build, test, secure, and deploy software. Each agent has its own persona, expertise, and workflow — defined by 4 configuration files.
 
 **Not a generic chatbot. Every agent is a specialist.**
 
 ```
-User provides feature goal → 30 agents deliver production-ready software
+User provides feature goal → 23 agents deliver production-ready software
 ```
 
 ### Key Differentiators
@@ -47,86 +47,87 @@ cp -r agents/ /path/to/your/paperclip/workspace/agents/
 
 ---
 
-> **Note:** Paperclip handles task dispatch, issue assignment, and status tracking natively via its API.
+## 🏗️ Architecture (23 Agents)
+
+> Paperclip handles task dispatch, issue assignment, and status tracking natively via its API.
 > The hierarchy below shows **expertise flow** — who informs whom, not who "commands" whom.
 
 ```mermaid
 graph TD
     CEO["👔 CEO<br/>Strategic Vision"]
 
-    PO["📋 Product Owner<br/>Backlog + Priorities"]
-    SM["🏃 Scrum Master<br/>Sprint Cadence"]
-    AG["🏛️ Gatekeeper<br/>HARD-GATE"]
+    subgraph Leadership
+        PO["📋 Product Owner<br/>Backlog + Sprint Planning"]
+        AG["🏛️ Gatekeeper<br/>HARD-GATE + Spec Review"]
+    end
 
     CEO --> PO
     CEO --> AG
-    PO <--> SM
 
-    %% Gatekeeper approves, then Orchestrator runs the pipeline
-    FO["🎯 Feature Orchestrator<br/>21-Step Pipeline"]
+    %% Feature Pipeline
+    FO["🎯 Feature Orchestrator<br/>Pipeline Hub"]
     AG --> FO
 
-    %% Pre-Build: Research & Spec
-    SPR["📋 Spec Reviewer"]
+    %% Research
     SR["🔬 Stack Researcher"]
-    AG --> SPR
     AG --> SR
 
     %% Design Phase
-    UX["🧪 UX Researcher"]
-    DA["🎨 Design Architect"]
+    subgraph Design
+        UX["🧪 UX Researcher"]
+        DA["🎨 Design Architect"]
+    end
     FO --> UX --> DA
 
     %% Build Phase
-    FB["⚛️ Frontend Builder"]
-    BB["🗄️ Backend Builder"]
+    subgraph Build
+        FB["⚛️ Frontend Builder"]
+        BB["🗄️ Backend Builder<br/>+ Events + API Schema"]
+    end
     FO --> FB
     FO --> BB
 
-    %% Backend sub-specialists
-    ES["📡 Event System"]
-    API["📐 API Schema"]
-    BB --- ES
-    BB --- API
-
-    %% Quality Gates (after Build)
-    SA["🔒 Security Auditor"]
-    PF["⚡ Performance Opt."]
-    AE["♿ Accessibility"]
+    %% Quality Gates
+    subgraph Quality
+        SA["🔒 Security Auditor"]
+        PF["⚡ Performance"]
+        AE["♿ Accessibility"]
+    end
     FO --> SA
     FO --> PF
     FO --> AE
 
     %% QA Pipeline
-    QA["🧪 QA Orchestrator<br/>5-Layer Pipeline"]
-    FO --> QA
-    UT["Unit Tests"]
-    DAU["Design Audit"]
-    E2E["E2E + Browser"]
-    VE["Validation"]
-    QA --> UT
-    QA --> DAU
-    QA --> E2E
-    QA --> VE
+    subgraph QA
+        QAO["🧪 QA Orchestrator<br/>+ Docs Update"]
+        UT["Unit Tests<br/>+ Testability"]
+        DAU["Design Audit"]
+        E2E["E2E + Browser<br/>+ VM"]
+        VE["Validation"]
+    end
+    FO --> QAO
+    QAO --> UT
+    QAO --> DAU
+    QAO --> E2E
+    QAO --> VE
 
-    %% Cross-cutting (available to all)
-    SD["🔍 Debugger"]
-    CQ["✅ Code Quality"]
-    GW["🌿 Git Workflow"]
-    DO["⚙️ DevOps + K8s"]
-    DM["📚 Docs Manager"]
-
+    %% Infrastructure (available to all)
+    subgraph Infrastructure
+        SD["🔍 Debugger"]
+        CQ["✅ Code Quality"]
+        GW["🌿 Git Workflow"]
+        DO["⚙️ DevOps + K8s"]
+    end
     AG --> SD
     AG --> CQ
     AG --> DO
     AG --> GW
-    AG --> DM
 
     %% Styling
     style CEO fill:#4A90D9,color:#fff
     style AG fill:#E74C3C,color:#fff
     style FO fill:#F39C12,color:#fff
-    style QA fill:#27AE60,color:#fff
+    style QAO fill:#27AE60,color:#fff
     style SA fill:#8E44AD,color:#fff
     style PO fill:#4A90D9,color:#fff
 ```

@@ -212,3 +212,22 @@ Why is this needed? What problem does it solve?
 - FID < 100ms
 - CLS < 0.1
 ```
+
+---
+
+## Spec Review (merged from Spec Reviewer)
+
+> `spec-document-reviewer` (obra/superpowers)
+
+**5-Category Review** — for every spec (PRD, UX_SPEC, DESIGN_SPEC):
+1. **Completeness** — All ACs defined? All edge cases covered?
+2. **Clarity** — Unambiguous language? No "should" or "maybe"?
+3. **Consistency** — No contradictions between sections?
+4. **Feasibility** — Buildable with mandated stack? Performance-realistic?
+5. **Testability** — Every AC verifiable? Clear pass/fail criteria?
+
+**Self-Refinement Loop** (max 4 iterations):
+```
+Read spec → Find issues → Ask: "Is this REALLY a problem?" → Report only genuine issues
+```
+

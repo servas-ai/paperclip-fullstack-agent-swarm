@@ -1,7 +1,7 @@
-# AGENTS_OVERVIEW.md — Alle 30 Agents
+# AGENTS_OVERVIEW.md — Alle 23 Agents
 
-> Letzte Aktualisierung: 2026-03-13
-> 30 Agents · 17 Skill-Quellen · Methodik: [obra/superpowers](https://github.com/obra/superpowers) + [pbakaus/impeccable](https://github.com/pbakaus/impeccable)
+> Letzte Aktualisierung: 2026-03-15
+> 23 Agents · 17 Skill-Quellen · Methodik: [obra/superpowers](https://github.com/obra/superpowers) + [pbakaus/impeccable](https://github.com/pbakaus/impeccable)
 
 ---
 
@@ -9,33 +9,28 @@
 
 ```
 CEO
-├── Product Owner → Scrum Master
-└── Architecture Gatekeeper
+├── Product Owner (+ Sprint Planning, Parallel Dispatch)
+└── Architecture Gatekeeper (+ Spec Review)
     ├── Stack Researcher
-    ├── Docs Manager
     ├── Code Quality Expert
-    ├── Spec Reviewer 🆕
-    ├── Security Auditor 🆕
+    ├── Systematic Debugger
+    ├── Security Auditor
     ├── DevOps Expert → Kubernetes Expert
-    │                 → Git Workflow Manager 🆕
-    │                 → Performance Optimizer 🆕
-    ├── Event-System Expert
-    ├── API Schema Expert
+    │                 → Git Workflow Manager
+    │                 → Performance Optimizer
     └── Feature Orchestrator
         ├── UX Researcher
         ├── Design Architect
         ├── Frontend Builder
-        ├── Backend Builder
-        └── QA Orchestrator
-            ├── Unit Test Writer
+        ├── Backend Builder (+ Events + API Schema)
+        └── QA Orchestrator (+ Docs Update)
+            ├── Unit Test Writer (+ Testability Analysis)
             ├── Design Auditor
-            ├── E2E Tester
-            ├── VM Tester
-            ├── Testability Expert
+            ├── E2E Tester (+ VM + Browser)
             ├── Validation Expert
-            └── Accessibility Expert 🆕
+            └── Accessibility Expert
 
-Cross-Cutting: Systematic Debugger 🆕, Browser Automation
+Cross-Cutting: Browser Automation (service)
 ```
 
 ---
@@ -46,34 +41,27 @@ Cross-Cutting: Systematic Debugger 🆕, Browser Automation
 |---|--------|-------|-------------|
 | 1 | `ceo/` | Leadership | Board |
 | 2 | `product-owner/` | Leadership | CEO |
-| 3 | `scrum-master/` | Leadership | PO |
-| 4 | `architecture-gatekeeper/` | Leadership | CEO |
-| 5 | `feature-orchestrator/` | Build | Gatekeeper |
-| 6 | `stack-researcher/` | Research | Gatekeeper |
-| 7 | `ux-researcher/` | Design | Orchestrator |
-| 8 | `design-architect/` | Design | Orchestrator |
-| 9 | `frontend-builder/` | Build | Orchestrator |
-| 10 | `backend-builder/` | Build | Gatekeeper |
-| 11 | `qa-orchestrator/` | QA | Orchestrator |
-| 12 | `unit-test-writer/` | QA | QA Mgr |
-| 13 | `design-auditor/` | QA | QA Mgr |
-| 14 | `e2e-tester/` | QA | QA Mgr |
-| 15 | `vm-tester/` | QA | QA Mgr |
-| 16 | `docs-manager/` | Docs | Gatekeeper |
-| 17 | `browser-automation/` | Infra | Service |
-| 18 | `devops-expert/` | Infra | Gatekeeper |
-| 19 | `kubernetes-expert/` | Infra | DevOps |
-| 20 | `event-system-expert/` | Arch | Gatekeeper |
-| 21 | `api-schema-expert/` | Arch | Gatekeeper |
-| 22 | `testability-expert/` | QA | QA Mgr |
-| 23 | `code-quality-expert/` | Quality | Gatekeeper |
-| 24 | `validation-expert/` | QA | QA Mgr |
-| 25 | `systematic-debugger/` 🆕 | Cross | Any Agent |
-| 26 | `spec-reviewer/` 🆕 | Quality | Gatekeeper |
-| 27 | `git-workflow-manager/` 🆕 | Infra | Gatekeeper |
-| 28 | `security-auditor/` 🆕 | Security | Gatekeeper |
-| 29 | `performance-optimizer/` 🆕 | Perf | Gatekeeper |
-| 30 | `accessibility-expert/` 🆕 | A11y | QA Mgr |
+| 3 | `architecture-gatekeeper/` | Leadership | CEO |
+| 4 | `feature-orchestrator/` | Pipeline | Gatekeeper |
+| 5 | `stack-researcher/` | Research | Gatekeeper |
+| 6 | `ux-researcher/` | Design | Orchestrator |
+| 7 | `design-architect/` | Design | Orchestrator |
+| 8 | `frontend-builder/` | Build | Orchestrator |
+| 9 | `backend-builder/` | Build | Gatekeeper |
+| 10 | `qa-orchestrator/` | QA | Orchestrator |
+| 11 | `unit-test-writer/` | QA | QA Mgr |
+| 12 | `design-auditor/` | QA | QA Mgr |
+| 13 | `e2e-tester/` | QA | QA Mgr |
+| 14 | `validation-expert/` | QA | QA Mgr |
+| 15 | `accessibility-expert/` | QA | QA Mgr |
+| 16 | `code-quality-expert/` | Quality | Gatekeeper |
+| 17 | `systematic-debugger/` | Cross | Any Agent |
+| 18 | `security-auditor/` | Security | Gatekeeper |
+| 19 | `performance-optimizer/` | Perf | Gatekeeper |
+| 20 | `devops-expert/` | Infra | Gatekeeper |
+| 21 | `kubernetes-expert/` | Infra | DevOps |
+| 22 | `git-workflow-manager/` | Infra | Gatekeeper |
+| 23 | `browser-automation/` | Infra | Service |
 
 ---
 
@@ -81,26 +69,23 @@ Cross-Cutting: Systematic Debugger 🆕, Browser Automation
 
 ```
  1. BACKLOG       ← Product Owner
- 2. SPRINT_GOAL   ← Scrum Master
- 3. GOAL.md       ← Gatekeeper
- 4. SPEC REVIEW   ← Spec Reviewer 🆕
- 5. PRD           ← Orchestrator
- 6. API_SPEC      ← API Schema Expert
- 7. RESEARCH      ← Stack Researcher
- 8. UX_SPEC       ← UX Researcher
- 9. DESIGN_SPEC   ← Design Architect
-10. VALIDATION    ← Validation Expert
-11. BRANCH        ← Git Workflow Manager 🆕
-12. CODE          ← Frontend + Backend Builder
-13. SECURITY      ← Security Auditor 🆕
-14. PERFORMANCE   ← Performance Optimizer 🆕
-15. ACCESSIBILITY ← Accessibility Expert 🆕
-16. QA            ← QA Orchestrator (Unit/E2E/Design/UX)
-17. QUALITY GATE  ← Code Quality Expert
-18. DOCS          ← Docs Manager
-19. MERGE         ← Git Workflow Manager 🆕
-20. DEPLOY        ← DevOps → K8s Expert
-21. SCORECARD     ← Orchestrator → PO
+ 2. GOAL.md       ← Gatekeeper (+ Spec Review)
+ 3. PRD           ← Orchestrator
+ 4. RESEARCH      ← Stack Researcher
+ 5. UX_SPEC       ← UX Researcher
+ 6. DESIGN_SPEC   ← Design Architect
+ 7. VALIDATION    ← Validation Expert
+ 8. BRANCH        ← Git Workflow Manager
+ 9. CODE          ← Frontend + Backend Builder
+10. SECURITY      ← Security Auditor
+11. PERFORMANCE   ← Performance Optimizer
+12. ACCESSIBILITY ← Accessibility Expert
+13. QA            ← QA Orchestrator (Unit/E2E/Design/UX)
+14. QUALITY GATE  ← Code Quality Expert
+15. DOCS UPDATE   ← QA Orchestrator
+16. MERGE         ← Git Workflow Manager
+17. DEPLOY        ← DevOps → K8s Expert
+18. SCORECARD     ← Orchestrator → PO
 ```
 
 ---
@@ -124,3 +109,15 @@ Cross-Cutting: Systematic Debugger 🆕, Browser Automation
 4. **TDD** — Kein Code ohne failing test
 5. **HARD-GATE** — Kein Code ohne Design-Approval
 6. **Mandated Stack** — Next.js 15 · React 19 · shadcn · Tailwind 4 · Zustand · Zod
+
+## Consolidated Agents (v1.2)
+
+| Entfernt | Merged in | Warum |
+|----------|----------|-------|
+| Scrum Master | Product Owner | Sprint Planning = PO-Funktion |
+| Spec Reviewer | Gatekeeper | Spec Review = Teil des Quality Gate |
+| Testability Expert | Unit Test Writer | Testability = Teil des Test-Prozesses |
+| VM Tester | E2E Tester | Web-App-Fokus, VM selten nötig |
+| Event-System Expert | Backend Builder | Supabase Realtime = Backend-Funktion |
+| API Schema Expert | Backend Builder | Zod Schemas = Backend-Prozess |
+| Docs Manager | QA Orchestrator | Docs Update = letzter QA-Schritt |

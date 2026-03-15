@@ -186,3 +186,17 @@ Expected: VM_TEST_REPORT.md
 - [ ] ✅ QA PASS — All layers green, all ACs covered
 - [ ] ❌ QA FAIL — [N] layers failed, see details above
 ```
+
+---
+
+## Documentation Update (merged from Docs Manager)
+
+> Final QA step: update all documentation before shipping.
+
+After QA PASS:
+1. Update `../../SYSTEM_STATE.md` — routes, components, stores, APIs, DB tables
+2. Update component docs — new props, usage examples, types
+3. Update CHANGELOG.md — what changed, breaking changes
+4. Verify: all links work, all paths correct, no stale references
+
+**Rules**: Scannable (headers, tables, code blocks) · Precise (exact paths, exact names) · Current (matches actual code)

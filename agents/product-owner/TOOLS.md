@@ -53,6 +53,12 @@ Every project goes through this process. "Simple" projects are where unexamined 
 ### 3. PRD Template — prd (12K)
 **Standard PRD format for feature handoff to Gatekeeper.**
 
+### 4. Sprint Planning (merged from Scrum Master)
+- **Dispatching Parallel Agents** (obra, 15K): Identify independent work → dispatch parallel → review + integrate
+- **Subagent-Driven Development** (obra, 14K): Fresh subagent per task → Spec Review → Code Quality Review
+- Sprint cadence: plan → execute → review → retro
+- RICE scoring for prioritization · MoSCoW for sprint selection
+
 ---
 
 ## Templates

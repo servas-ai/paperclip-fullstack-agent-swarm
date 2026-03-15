@@ -122,3 +122,36 @@ src/
 
 ## Shared Config
 Read `../SHARED_CONFIG.md` for mandated stack, rules, and project structure.
+
+---
+
+## Event System (merged from Event-System Expert)
+
+> Supabase Realtime for real-time features.
+
+```typescript
+// Subscribe to changes
+const channel = supabase.channel('room')
+  .on('postgres_changes', { event: '*', schema: 'public', table: 'messages' }, handler)
+  .subscribe()
+```
+- RLS applies to Realtime — user only sees rows they're authorized for
+- Idempotency: handle duplicate events (use event ID dedup)
+- Cleanup: `supabase.removeChannel(channel)` on unmount
+
+## API Schema (merged from API Schema Expert)
+
+> Contract-First TDD: define Zod schema → write failing test → implement.
+
+```typescript
+// Shared schema (frontend + backend)
+export const createUserSchema = z.object({
+  name: z.string().min(1).max(100),
+  email: z.string().email(),
+  role: z.enum(['admin', 'user']),
+})
+export type CreateUserInput = z.infer<typeof createUserSchema>
+```
+- Schema for EVERY: request body, query params, path params, response
+- Validation at EVERY boundary (Route Handler entry, Server Action entry)
+- Export inferred types for frontend consumption
