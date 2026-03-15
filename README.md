@@ -145,24 +145,24 @@ graph TD
 
 ---
 
-## 🔄 Feature Lifecycle (20 Steps)
+## 🔄 Feature Lifecycle (18 Steps)
 
 ```mermaid
 graph LR
     subgraph Planning
-        B["1. Backlog"] --> G["2. Goal"] --> SP["3. Spec Review"] --> PRD["4. PRD"]
+        B["1. Backlog"] --> G["2. Goal + Spec Review"] --> PRD["3. PRD"]
     end
 
     subgraph Design
-        PRD --> API["5. API Spec"] --> R["6. Research"] --> UX["7. UX Spec"] --> DS["8. Design Spec"] --> V["9. Validation"]
+        PRD --> R["4. Research"] --> UX["5. UX Spec"] --> DS["6. Design Spec"] --> V["7. Validation"]
     end
 
     subgraph Build
-        V --> BR["10. Branch"] --> CODE["11. Code"] --> SEC["12. Security"] --> PERF["13. Perf."] --> A11Y["14. A11y"]
+        V --> BR["8. Branch"] --> CODE["9. Code"] --> SEC["10. Security"] --> PERF["11. Perf."] --> A11Y["12. A11y"]
     end
 
     subgraph Delivery
-        A11Y --> QA["15. QA"] --> QG["16. Quality"] --> DOC["17. Docs"] --> MG["18. Merge"] --> DEP["19. Deploy"] --> SC["20. Done"]
+        A11Y --> QA["13. QA"] --> QG["14. Quality"] --> DOC["15. Docs"] --> MG["16. Merge"] --> DEP["17. Deploy"] --> SC["18. Done"]
     end
 
     style Planning fill:#E8F4FD,stroke:#4A90D9
