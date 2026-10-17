@@ -95,6 +95,26 @@ Jeder Aufruf trägt eine **serverseitig bestätigte** `principal_id`, `tenant_id
 - **`fintaro-ai/fintaro-mcp`**: PII-arme, scopespezifische Finanzwerkzeuge; kein universeller Datenabfluss.
 - **Weitere Fachrepos**: nur referenzieren, wenn die Schnittstelle benötigt wird.
 
+## PR- und Integrationsindex (17.10.2026)
+
+**Review-Branches, noch nicht `main`**. Jeder Repo-PR ist ein eigenständiger Change; dies ist keine Abnahme oder Verifikation des laufenden Systems.
+
+| Repository | Rolle | Implementierungs-PR |
+|---|---|---|
+| `servas-ai/paperclip-fullstack-agent-swarm` | Kanonische Architektur + README | [PR #1](https://github.com/servas-ai/paperclip-fullstack-agent-swarm/pull/1) |
+| `servas-ai/agent-installer` | Opt-in-Agent-Pack, gepinntes Git-Submodul | [PR #8](https://github.com/servas-ai/agent-installer/pull/8) |
+| `servas-ai/radar` | AVV/Consent, freigegebener Erkenntnisexport | [PR #621](https://github.com/servas-ai/radar/pull/621) |
+| `servas-ai/browser-voice-harness` | Kein stilles Transkript-Capture, MCP-Grenze | [PR #15](https://github.com/servas-ai/browser-voice-harness/pull/15) |
+| `fintaro-ai/fintaro-v2` | Setup/Finance-Demo und Produkt-Adapter | [PR #30](https://github.com/fintaro-ai/fintaro-v2/pull/30) |
+| `fintaro-ai/fintaro` | v3 Finanz-SoT; Agenten standardmäßig read-only | [PR #111](https://github.com/fintaro-ai/fintaro/pull/111) |
+| `fintaro-ai/fintaro-mcp` | Least-privilege-MCP / PII-sichere Tools | [PR #1](https://github.com/fintaro-ai/fintaro-mcp/pull/1) |
+| `fintaro-ai/fintaro-cli` | Versionierte CLI-/Skill-Gates | [PR #2](https://github.com/fintaro-ai/fintaro-cli/pull/2) |
+| `fintaro-ai/fintaro-infra` | Deployment-Vorbedingungen, keine Liveservices | [PR #1](https://github.com/fintaro-ai/fintaro-infra/pull/1) |
+| `fintaro-ai/Fintaro-Agent` | Autorisierter Browser-Worker | [PR #42](https://github.com/fintaro-ai/Fintaro-Agent/pull/42) |
+| `servas-ai/moneymaker-fastt-core` | Freigegebener Research-Kontext, getrennte Memory-Banks | [PR #10](https://github.com/servas-ai/moneymaker-fastt-core/pull/10) |
+
+**Submodul-Policy angewendet:** Nur `agent-installer → paperclip-fullstack-agent-swarm` neu als Gitlink. `radar → browser-voice-harness` besteht bereits und wurde nicht verändert. Alle übrigen Verknüpfungen sind Markdown-/API-Verträge statt blind vervielfachte Code-Kopien.
+
 ## Nachweise / Quellen zum Abgleich
 
 - [Paperclip Upstream](https://github.com/paperclipai/paperclip)
