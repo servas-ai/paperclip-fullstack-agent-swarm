@@ -1,5 +1,7 @@
 # 🤖 Paperclip Fullstack Agent Swarm
 
+> 🧠 **[Universal Paperclip Stack — Architektur, Memory, MCP und sichere Submodule](docs/ARCHITECTURE-PAPERCLIP-STACK-2026-10-17.md)** (Entwurf, 17.10.2026)
+
 > **23 specialized AI agents** for end-to-end software development — from idea to deploy.
 
 [![Agents](https://img.shields.io/badge/Agents-23-blue)]() [![Skills](https://img.shields.io/badge/Skills-23+-green)]() [![Skill_Sources](https://img.shields.io/badge/Skill_Sources-17_Repos-orange)]() [![Methodology](https://img.shields.io/badge/Methodology-superpowers+impeccable-blueviolet)]()
